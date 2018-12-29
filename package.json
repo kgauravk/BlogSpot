@@ -1,0 +1,19 @@
+{
+  "name": "blog-spot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kgauravk/BlogSpot.git"
+  },
+  "author": "Gaurav",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kgauravk/BlogSpot/issues"
+  },
+  "homepage": "https://github.com/kgauravk/BlogSpot#readme"
+}
