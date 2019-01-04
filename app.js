@@ -51,6 +51,23 @@ app.get('/blogs/new',(req,res)=>{
     res.render('new');
 });
 
+app.get('/blogs/:id',(req,res)=>{
+    var id = req.params.id;
+    Blog.findById(id,(err,blog)=>{
+        if(err){
+            console.log(err);
+            res.redirect('/blogs');
+        }
+        else{
+            res.render('show',{blog:blog});
+        }
+    });
+});
+
+app.get('/blogs/:id/edit',(req,res)=>{
+    res.render('edit');
+});
+
 app.post('/blogs',(req,res)=>{
 
     var title = req.body.title;
