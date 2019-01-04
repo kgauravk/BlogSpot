@@ -1,13 +1,16 @@
-var express = require('express'),
-app         = express(),
-mongoose    = require('mongoose'),
-bodyParser  = require('body-parser');
+var express     = require('express'),
+app             = express(),
+mongoose        = require('mongoose'),
+bodyParser      = require('body-parser'),
+methodOverride  = require('method-override');
 
 
 mongoose.connect('mongodb://localhost/blog_spot',{useNewUrlParser:true});
 app.set("view engine","ejs");
+
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(express.static("public"));
+app.use(methodOverride('_method'));
 
 
 var blogSchema = new mongoose.Schema({
@@ -56,7 +59,6 @@ app.get('/blogs/:id',(req,res)=>{
     Blog.findById(id,(err,blog)=>{
         if(err){
             console.log(err);
-            res.redirect('/blogs');
         }
         else{
             res.render('show',{blog:blog});
@@ -65,8 +67,17 @@ app.get('/blogs/:id',(req,res)=>{
 });
 
 app.get('/blogs/:id/edit',(req,res)=>{
-    res.render('edit');
+    var id= req.params.id;
+    Blog.findById(id,(err,blog)=>{
+        if(err){
+            console.log(err);
+        }else{
+
+            res.render('edit',{blog:blog});
+        }
+    });
 });
+
 
 app.post('/blogs',(req,res)=>{
 
@@ -87,6 +98,30 @@ app.post('/blogs',(req,res)=>{
             res.redirect('/blogs');
         }
     });
+});
+
+
+app.put('/blogs/:id',(req,res)=>{
+    Blog.findByIdAndUpdate(req.params.id,req.body.blog, (err,updatedBlog)=>{
+        if(err){
+            console.log(err);
+        }else{
+            res.redirect('/blogs/'+req.params.id);
+        }
+
+    });
+});
+
+app.delete('/blogs/:id',(req,res)=>{
+
+    Blog.findByIdAndRemove(req.params.id,(err)=>{
+        if(err){
+            res.redirect('/blogs');
+        }else{
+            res.redirect('/blogs');
+        }
+    });
+
 });
 
 app.listen(3000,()=>{
